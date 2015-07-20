@@ -1,0 +1,10 @@
+<config>
+		<Server>
+			 <IP>192.168.1.113</IP>
+			 <PORT>9097</PORT>
+		</Server>
+		<UDP>
+			 <IP>233.233.233.223</IP>
+			 <PORT>6666</PORT>
+		</UDP>
+</config>

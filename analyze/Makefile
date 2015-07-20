@@ -1,0 +1,14 @@
+obj-y += interface.o
+obj-y += human.o
+obj-y += region.o
+obj-y += smoke.o
+obj-y += utils.o
+obj-y += VideoHandler.o
+obj-y += FeatureAnalyzer.o
+obj-y += FlameDecider.o
+obj-y += FlameDetector.o
+obj-y += TargetExtractor.o
+obj-y += flame.o
+obj-y += Wavelet.o
+obj-y += Analyze.o
+obj-y += SingleCam.o

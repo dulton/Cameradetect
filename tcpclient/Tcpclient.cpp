@@ -1009,7 +1009,8 @@ void * tcp_server_thread(void *param)
 	t_SerMess.iConnectFlag  =0;
 
 	memset(&t_ClientInstance, 0 ,sizeof(T_TcpClient));
-	
+
+	sleep(2);
 	t_ClientInstance.pt_PServerBase  = event_base_new();  
 	if (!t_ClientInstance.pt_PServerBase) {
 		printf("Could not initialize libevent!\n");

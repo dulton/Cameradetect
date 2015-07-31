@@ -226,13 +226,17 @@ int report_mcu_new_register(char *MAC,uint8 type)
 	memcpy(t_AnayNewReg.MCUAddr ,t_McuMess.cMac,MCU_MAC_LEN_20);
 	t_AnayNewReg.ConnectType    =  type;
 	memcpy(ReNewRegBuff+sizeof(T_PacketHead),&t_AnayNewReg,sizeof(ST_SM_VDCS_ANAY_RENEW_REGISTER_MCU));
-	
-	iRet = send(t_SerMess.iClientFd,ReNewRegBuff,sizeof(ReNewRegBuff),0);
-	if(iRet <=0 ){
-		dbgprint("send data to server error !\n");
-		return MCU_RE_REGISTER_REPORT_ERR;
+
+	if(t_SerMess.iClientFd >0){
+		iRet = send(t_SerMess.iClientFd,ReNewRegBuff,sizeof(ReNewRegBuff),0);
+		if(iRet <=0 ){
+			dbgprint("send data to server error !\n");
+			return MCU_RE_REGISTER_REPORT_ERR;
+		}
+		dbgprint("send %d byte to server !\n",iRet);	
+	}else{
+		dbgprint("server is not connected!\n");	
 	}
-	dbgprint("send %d byte to server !\n",iRet);	
 	return 0;
 }
 
@@ -361,6 +365,7 @@ static void conn_mcu_eventcb(struct bufferevent *bev, short events, void *arg)
 	else if (events & BEV_EVENT_EOF) {
 			printf("--mcu connection closed--\n");
 	}
+	
 	else if (events & BEV_EVENT_ERROR) {
 			printf("--mcu some other error--\n");
 	}
@@ -389,11 +394,24 @@ static void mcu_listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
                                             struct sockaddr *sa, int socklen, void *arg )
 {
 	PT_TcpServer  pt_TcpServer = (PT_TcpServer)arg;
+	
+	printf("sa->sa_data is %s \n",inet_ntoa(((struct sockaddr_in*)sa)->sin_addr));
+/*
+	if(t_McuMess.pt_ClientAddr != NULL){
+		printf("inet_ntoa(t_McuMess.pt_ClientAddr->sin_addr) is %s\n",inet_ntoa(t_McuMess.pt_ClientAddr->sin_addr));
+		if(strcmp(inet_ntoa(((struct sockaddr_in*)sa)->sin_addr),inet_ntoa(t_McuMess.pt_ClientAddr->sin_addr)) == 0)
+			return ;
+	}*/
+	//if()
+	/*
+	if(strcmp(inet_ntoa(((struct sockaddr_in*)sa)->sin_addr),inet_ntoa(t_McuMess.pt_ClientAddr->sin_addr)) == 0)
+	return ;
+	*/
 
-	if(t_McuMess.iFd  >0){
-			 			return;
-	}
-		
+/*
+	if(t_McuMess.pt_ClientAddr->sin_addr.s_addr ==sa->sa_data)
+		return ;
+*/		
 	pt_TcpServer->pt_AServerBev = bufferevent_socket_new(pt_TcpServer->pt_AServerBase, fd, BEV_OPT_CLOSE_ON_FREE);
 	if (!pt_TcpServer->pt_AServerBev) {
 		printf("Error constructing bufferevent!\n");
@@ -404,6 +422,7 @@ static void mcu_listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
 	
 	t_McuMess.iFd                    = 	fd;
 	t_McuMess.pt_ClientAddr   = 	(struct sockaddr_in*)sa;
+	
 	
 	bufferevent_setcb	(pt_TcpServer->pt_AServerBev, conn_mcu_readcb, NULL, conn_mcu_eventcb, (void *)pt_TcpServer);
 	bufferevent_enable	(pt_TcpServer->pt_AServerBev, EV_WRITE|EV_READ);

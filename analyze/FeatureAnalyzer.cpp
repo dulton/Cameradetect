@@ -94,7 +94,7 @@ void Feature::calcTexture(int levels, int dx, int dy)
     Mat temp;
     mGray.copyTo(temp);
     
-    // TODO: implement my own version of 'equalizeHist' which accepts mask as an argument
+    //TODO: implement my own version of 'equalizeHist' which accepts mask as an argument
     double minVal;
     minMaxLoc(temp, &minVal, NULL, NULL, NULL, mMask);
     uchar min = cvRound(minVal);

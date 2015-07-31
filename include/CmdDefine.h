@@ -86,7 +86,7 @@ typedef struct
 	uint8   	UserName[USRNAME_LEN_20];
 	uint8		MCUAddr [MCU_MAC_LEN_20];
 	uint8		port;                     // 0~3   4个报警器
-	uint8		TermType;          // 3/4 报警器 还是电控锁
+	uint8		TermType;          // 2/3 报警器 还是电控锁
 	uint8		OpFlag;               // 操作指令码       0 / 1  kai /guan
 	uint16	Res;     
 	

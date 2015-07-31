@@ -16,7 +16,7 @@ int CSingleCam::GetCamParam()
 {	
 	Mat tmpframe;
 	uint32  num  = 0;
-	m_vcap.open(CV_CAP_PVAPI);
+	m_vcap.open(CV_CAP_FIREWARE);
 	if(!m_vcap.open(m_videoStream)) {
 		cout << "Error opening video stream or file!" << endl;
 		return -1;

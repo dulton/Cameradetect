@@ -43,6 +43,7 @@ int main(int argc,char**argv)
 
 	while(1){	
 		sleep(5);
+		
 		if((t_SerMess.ialive  == 0)&&(t_SerMess.iConnectFlag == 1)){
 			re_connect_server();
 		}

@@ -218,20 +218,20 @@ void getFilteredFrame(Mat& frame, Mat& filtered) //µÃµ½Ã¿¸öÏñËØµãµÄ¿ò¼Ü£¬¾ÍÏñÍ¼Ï
 		//Dst = 0;
 		frame.convertTo(Src,CV_32FC1);
 		cvHaarWavelet(Src,Dst,NIter);//±ßÔµÔöÇ¿
-		imshow("cvHaarWavelet", Dst);
+		//imshow("cvHaarWavelet", Dst);
 		double M=0,m=0;
 		minMaxLoc(Dst,&m,&M);//Ñ°ÕÒ¾ØÕó(Ò»Î¬Êý×éµ±×÷ÏòÁ¿,ÓÃMat¶¨Òå) ÖÐ×îÐ¡ÖµºÍ×î´óÖµµÄÎ»ÖÃ
 		if((M-m)>0) {Dst=Dst*(1.0/(M-m))-m/(M-m);}
 		Dst.copyTo(Temp);
-		imshow("minMaxLoc", Dst);
+		//imshow("minMaxLoc", Dst);
 		cvInvHaarWavelet(Temp,filtered,NIter,GARROT,30);//Ð¡²¨Äæ±ä»»  ½á¹ûÎª»ÒÉ«µÄ
-		imshow( "cvInvHaarWavelet",filtered );
+		//imshow( "cvInvHaarWavelet",filtered );
 		//----------------------------------------------------
 		// Normalization to 0-1 range (for visualization)
 		//----------------------------------------------------
 		minMaxLoc(filtered,&m,&M);
 		if((M-m)>0) {filtered=filtered*(1.0/(M-m))-m/(M-m);} //  ½á¹ûÎª°×É«µÄ
-		imshow("minMaxLoc filtered", filtered);
+		//imshow("minMaxLoc filtered", filtered);
 		Src.release();
 		Dst.release();
 		Temp.release();
